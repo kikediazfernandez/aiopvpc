@@ -26,8 +26,8 @@ from aiopvpc.const import (
     DEFAULT_TIMEOUT,
     EsiosApiData,
     EsiosResponse,
-    KEY_PVPC,
     KEY_INDEXED,
+    KEY_PVPC,
     REFERENCE_TZ,
     SENSOR_KEY_TO_API_SERIES,
     SENSOR_KEY_TO_DATAID,
@@ -302,12 +302,9 @@ class PVPCData:
                 next(iter(current_prices)).strftime("%Y-%m-%d %Hh"),
             )
             return None
-        elif (
-                local_ref_now.hour < 20 < current_num_prices
-                and (
-                list(current_prices)[-12].astimezone(REFERENCE_TZ).date()
-                == local_ref_now.date()
-            )
+        elif local_ref_now.hour < 20 < current_num_prices and (
+            list(current_prices)[-12].astimezone(REFERENCE_TZ).date()
+            == local_ref_now.date()
         ):
             # already have today prices, avoid request
             _LOGGER.debug(
@@ -407,7 +404,7 @@ class PVPCData:
         )
 
         # generate PVPC 2.0TD sensor attributes
-        if sensor_key in [KEY_PVPC,KEY_INDEXED]:
+        if sensor_key in [KEY_PVPC, KEY_INDEXED]:
             local_time = utc_time.astimezone(self._local_timezone)
             (
                 current_period,
